@@ -1,0 +1,91 @@
+﻿@model (List<CRMsystem.Models.Task>, List<Employee>)
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<div class="text-center">
+
+    <h1>Employee List</h1>
+    <div class="form-button">
+        <button class="btn" onclick="openModal()">Добавить</button>
+        <button class="btn" onclick="openChangeModal()">Редактировать</button>
+        <button class="btn" onclick="deleteSelectedRow(1)">Удалить</button>
+        
+    </div>
+    <table class="styled-table" id="tasksTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Наименование</th>
+                <th>Описание</th>
+                <th>Дата старта</th>
+                <th>Дата завершения</th>
+                <th>Выполнения %</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Item1 != null)
+            {
+                @foreach (var task in Model.Item1)
+                {
+                    <tr onclick="selectRow(this)">
+                        <td>@task.Id</td>
+                        <td>@task.Title</td>
+                        <td>@task.Description</td>
+                        <td>@task.StartDate</td>
+                        <td>@task.EndDate</td>
+                        <td>@task.Percent</td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+
+    </table>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Добавить задачу</h2>
+            <form id="addTaskForm" method="post">
+                <label for="title">Наименование:</label><br>
+                <input type="text" id="title" name="title" required><br>
+                <label for="description">Описание:</label><br>
+                <input type="text" id="description" name="description" required><br>
+                <label for="startDate">Дата начало:</label><br>
+                <input type="datetime-local" id="startDate" name="startDate"><br>
+                <label for="endDate">Дата завершения:</label><br>
+                <input type="datetime-local" id="endDate" name="endDate"><br>
+                <label for="employee">Работник:</label><br>
+                
+                <select id="emp" name="emp">
+                        @foreach(var emp in Model.Item2){
+                            <option value="@emp.Id">@emp.FullName</option>
+                        }
+                </select>
+                <br>
+                <input class="btn" value="Send" onclick="addTask()" />
+            </form>
+        </div>
+    </div>
+
+    <div id="myModalTwo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChangeModal()">&times;</span>
+            <h2>Изменить задачу</h2>
+            <form id="changeTaskForm">
+                <label for="title">Наименование:</label><br>
+                <input type="text" id="titleForChange" name="titleForChange" required><br>
+                <label for="description">Описание:</label><br>
+                <input type="text" id="descriptionForChange" name="descriptionForChange" required><br>
+                <label for="startDate">Дата начало:</label><br>
+                <input type="datetime-local" id="startDateForChange" name="startDateForChange"><br>
+                <label for="endDate">Дата завершения:</label><br>
+                <input type="datetime-local" id="endDateForChange" name="endDateForChange"><br>
+                <input class="btn btn-primary" onclick="saveTask()" value="Send" />
+            </form>
+        </div>
+    </div>
+
+
+</div>

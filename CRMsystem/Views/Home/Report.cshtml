@@ -1,0 +1,40 @@
+﻿@model List<ReportData>
+@{
+    ViewData["Title"] = "Report";
+}
+
+<div class="text-center">
+
+    <div class="form-button">
+        <button class="btn" onclick="printReport()">Печать</button>
+    </div>
+    <table class="styled-table" id="reportTable">
+        <thead>
+            <tr>
+                <th>Сотрудник</th>
+                <th>Наименование</th>
+                <th>Дата старта</th>
+                <th>Дата конца</th>
+                <th>Выполнено %</th>
+                <th>Просрочено дней</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model)
+            {
+                <tr>
+                    <td>@report.FullName</td>
+                    <td>@report.Title</td>
+                    <td>@report.StartDate</td>
+                    <td>@report.EndDate</td>
+                    <td>@report.Percent%</td>
+                    <td>@report.Overdue </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+

@@ -1,0 +1,78 @@
+﻿@model Dictionary<Guid,EmployeeForView>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+
+    <h1>Employee List</h1>
+    <div class="form-button">
+        <button class="btn" onclick="openModal()">Добавить</button>
+        <button class="btn" onclick="openChangeModal()">Редактировать</button>
+        <button class="btn" onclick="deleteSelectedRow(0)">Удалить</button>
+        <div class="right-buttons">
+            <button class="btn" onclick="redirectOnTasks()">Задачи</button>
+            <button class="btn" onclick="report()">Отчет</button>
+            
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Поиск по ФИО" oninput="filterTable()">
+        </div>
+    </div>
+    <table class="styled-table" id="employeeTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ФИО</th>
+                <th>Должность</th>
+                <th>Задач</th>
+                <th>Выполнено</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Values)
+            {
+                <tr onclick="selectRow(this)">
+                    <td>@employee.Id</td>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Title</td>
+                    <td>@employee.TaskCount</td>
+                    <td>@(employee.TaskDonePercent / (employee.TaskCount == 0 ?  1 : employee.TaskCount)) %</td>
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Добавить пользователя</h2>
+            <form id="addEmployeeForm" method="post">
+                <label for="FullName">ФИО:</label><br>
+                <input type="text" id="fullName" name="fullName" required><br>
+                <label for="Title">Должность:</label><br>
+                <input type="text" id="title" name="title" required><br>
+                <input type="submit" class="btn" value="Send" />
+            </form>
+        </div>
+    </div>
+
+    <div id="myModalTwo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChangeModal()">&times;</span>
+            <h2>Изменить пользователя</h2>
+            <form id="changeEmployeeForm">
+                <input type="hidden" id="editEmployeeId" name="Id">
+                <label for="fullNameForChange">ФИО:</label><br>
+                <input type="text" id="fullNameForChange" name="FullName" required><br>
+                <label for="titleForChange">Должность:</label><br>
+                <input type="text" id="titleForChange" name="Title" required><br>
+                <input class="btn btn-primary" onclick="saveEmployee()" value="Send" />
+            </form>
+        </div>
+    </div>
+    
+
+</div>
